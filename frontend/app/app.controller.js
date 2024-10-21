@@ -16,13 +16,26 @@ angular.module('myApp').controller('FormController', function($scope, AuthServic
     };
 
     $scope.register = function() {
+      console.log($scope.user)
+      if($scope.user.password != $scope.user.passwordConfirm )
+      {
+        $scope.validatePass = true;
+        $scope.message = { error: 'Mật khẩu không khớp. Vui lòng thử lại.' };
+        return;
+      } else {
         AuthService.register($scope.user).then(function(response) {
+          if (response && response.data && response.status != 409) {
             $scope.message = 'Registration successful!';
             $scope.user = {};
+          }
         }).catch(function(error) {
+          if (response.status == 409) {
+            $scope.message = { error: error };
+          }
             $scope.message = { error: error.data.message };
             console.log(error)
         });
+      }
     };
 
     $scope.login = function(e) {

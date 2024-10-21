@@ -13,11 +13,10 @@
     <script src="app/app.service.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="./assets/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
 </head>
 
 <body ng-controller="FormController">
@@ -28,9 +27,12 @@
                 <img src="./assets/bg-3.png" class="m-auto" alt="">
             </div>
             <div class="flex-1 m-auto flex flex-col items-center text-sky-600">
-                <p ng-if="message" class="bg-green-200 text-green-500 p-2 mb-4 rounded-xl" ng-class="{'text-red-500 bg-red-200 p-2 mb-4 rounded-xl' : message.error }">{{ message.error ? message.error : message }}</p>
+                <p ng-if="message" class="bg-green-200 text-green-500 p-2 mb-4 rounded-xl"
+                    ng-class="{'text-red-500 bg-red-200' : message.error }">{{ message.error ?
+                    message.error : message }}</p>
                 <h1 class="text-center font-bold text-4xl pb-10">{{ isRegister ? 'ĐĂNG KÝ' : 'ĐĂNG NHẬP' }}</h1>
-                <form ng-if="!mfa" ng-submit="isRegister ? register() : login($event)" class="text-center mx-4 flex flex-col justify-center items-center w-full" ng-class="{'w-1/2': mfa}">
+                <form ng-if="!mfa" ng-submit="isRegister ? register() : login($event)"
+                    class="text-center mx-4 flex flex-col justify-center items-center w-full" ng-class="{'w-1/2': mfa}">
                     <div class="w-4/5 m-auto">
                         <div class="flex mb-5 bg-gray-200 rounded-xl items-center overflow-hidden">
                             <label class="mx-2 w-1/12" for="email"><i class="text-xl fa-solid fa-envelope"></i></label>
@@ -43,10 +45,13 @@
                                 class="p-5 flex-1 bg-gray-200 text-gray-800 outline-none" ng-model="user.password"
                                 placeholder="Password" required>
                         </div>
-                        <div ng-if="isRegister" class="flex mb-5 bg-gray-200 rounded-xl items-center overflow-hidden">
+                        <div ng-if="isRegister" class="flex relative mb-5 bg-gray-200 rounded-xl items-center">
                             <label class="mx-2 w-1/12" for="password"><i class="text-xl fa-solid fa-lock"></i></label>
-                            <input type="password" id="password" class="p-5 flex-1 bg-gray-200 text-gray-800 outline-none"
-                                ng-model="user.password" placeholder="Password confirm" required>
+                            <input type="password" id="password"
+                                class="p-5 flex-1 bg-gray-200 text-gray-800 outline-none rounded-xl"
+                                ng-model="user.passwordConfirm" placeholder="Password confirm" required>
+                            <p ng-if="validatePass" class="absolute -bottom-5 right-0 text-sm text-red-500">Mật khẩu
+                                không chính xác</p>
                         </div>
                         <p>
                             {{ isRegister ? 'Bạn đã có tài khoản?' : 'Bạn chưa có tài khoản?' }}
@@ -59,27 +64,30 @@
                         <div class="flex justify-center">
                             <img ng-src="{{ qrCode }}" alt="">
                         </div>
-                        <input type="text" class="p-5 rounded-xl flex-1 bg-gray-200 text-gray-800 outline-none" ng-model="user.otp"
-                            placeholder="OTP" required>
+                        <input type="text" class="p-5 rounded-xl flex-1 bg-gray-200 text-gray-800 outline-none"
+                            ng-model="user.otp" placeholder="OTP" required>
                     </div>
-                    <button type="submit" class="bg-blue-500 mt-7 hover:bg-blue-700 text-lg p-2 rounded-xl text-white w-4/5">Xác nhận</button>
+                    <button type="submit"
+                        class="bg-blue-500 mt-7 hover:bg-blue-700 text-lg p-2 rounded-xl text-white w-4/5">Xác
+                        nhận</button>
                 </form>
                 <form ng-if="mfa" ng-submit="verify($event)" action="" class="text-center">
                     <div class="flex flex-col items-center">
                         <div ng-if="qrCode" class="flex justify-center">
                             <img ng-src="{{ qrCode }}" alt="">
                         </div>
-                        <input type="text" class="p-5 rounded-xl flex-1 bg-gray-200 text-gray-800 outline-none" ng-model="user.otp"
-                            placeholder="OTP" required>
+                        <input type="text" class="p-5 rounded-xl flex-1 bg-gray-200 text-gray-800 outline-none"
+                            ng-model="user.otp" placeholder="OTP" required>
                     </div>
-                    <button type="submit" class="bg-blue-500 mt-7 hover:bg-blue-700 text-lg p-2 rounded-xl text-white w-4/5">Xác
+                    <button type="submit"
+                        class="bg-blue-500 mt-7 hover:bg-blue-700 text-lg p-2 rounded-xl text-white w-4/5">Xác
                         nhận</button>
                 </form>
             </div>
         </div>
-    <!-- </div> -->
-    <div ng-if="isLogin">
-        <div ng-view></div>
+        <!-- </div> -->
+        <div ng-if="isLogin">
+            <div ng-view></div>
         </div>
     </div>
 </body>

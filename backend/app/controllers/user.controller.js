@@ -47,13 +47,13 @@ exports.register = async (req, res, next) => {
     const exits = await User.findOne({ email: email });
 
     if (exits) {
-      res.status(409).json({ error: "Tài khoản đã tồn tại !!!" });
+      res.status(409).json({ message: "Tài khoản đã tồn tại !!!" });
     } else {
       await user.save();
       res.status(201).json({ message: "User registered" });
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -73,7 +73,7 @@ exports.enableMFA = async (req, res, next) => {
     const qrCodeDataUrl = await qrcode.toDataURL(secret.otpauth_url);
     res.status(200).json({ qrCodeDataUrl });
   } catch (error) {
-    res.status(500).json({ error: "Error enabling MFA" });
+    res.status(500).json({ message: "Error enabling MFA" });
   }
 };
 
@@ -108,7 +108,7 @@ exports.verifyMFA = async (req, res) => {
             // role: result.role
         },  
         process.env.JWT_ACCESS_TOKEN,
-        { expiresIn: "15s" }
+        { expiresIn: "900s" }
     );
     // refresh
     const refreshToken = jwt.sign(
@@ -128,7 +128,7 @@ exports.verifyMFA = async (req, res) => {
     });
     res.status(200).json({ token: accessToken });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -158,7 +158,7 @@ exports.refreshToken = async (req, res, next) => {
                 // role: result.role
             },  
             process.env.JWT_ACCESS_TOKEN,
-            { expiresIn: "15s" }
+            { expiresIn: "900s" }
         );
         // refresh
         const newRefreshToken = jwt.sign(
