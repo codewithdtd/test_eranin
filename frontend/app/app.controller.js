@@ -23,15 +23,13 @@ angular.module('myApp').controller('FormController', function($scope, AuthServic
         $scope.message = { error: 'Mật khẩu không khớp. Vui lòng thử lại.' };
         return;
       } else {
+        $scope.validatePass = false;
         AuthService.register($scope.user).then(function(response) {
           if (response && response.data && response.status != 409) {
             $scope.message = 'Registration successful!';
             $scope.user = {};
           }
         }).catch(function(error) {
-          if (response.status == 409) {
-            $scope.message = { error: error };
-          }
             $scope.message = { error: error.data.message };
             console.log(error)
         });
@@ -49,6 +47,9 @@ angular.module('myApp').controller('FormController', function($scope, AuthServic
                     AuthService.enableMFA($scope.user).then(function(res) {
                         $scope.qrCode = res.data.qrCodeDataUrl;
                     });
+                }
+                else {
+                  $scope.qrCode = '';
                 }
                 $scope.message = '';
             } else {
@@ -124,7 +125,7 @@ angular.module('myApp')
 
           // Kiểm tra nếu lỗi là do hết hạn token
           if (errorMessage.includes('not authenticated') || errorMessage.includes('Token is not valid')) {
-            
+            console.log('Token hết hạn - refreshtoken')
             AuthService.refresh({}).then(function(newToken) {
               $window.localStorage.setItem('accessToken', newToken.data.accessToken);
               response.config.headers.Authorization = `Bearer ${newToken.data.accessToken}`;

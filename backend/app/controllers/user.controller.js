@@ -79,12 +79,12 @@ exports.enableMFA = async (req, res, next) => {
 
 exports.verifyMFA = async (req, res) => {
   const { userId, otp } = req.body;
-
+  console.log(otp)
   try {
     const user = await User.findById(userId);
-    if (!user || !user.mfaEnabled) {
-      return res.status(404).json({ message: "MFA not enabled" });
-    }
+    // if (!user || !user.mfaEnabled) {
+    //   return res.status(404).json({ message: "MFA not enabled" });
+    // }
 
     const verified = speakeasy.totp.verify({
       secret: user.mfaSecret,
